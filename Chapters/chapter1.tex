@@ -1,0 +1,44 @@
+\chapter{Introduction}
+
+\section{Overview and Motivation}
+% Understanding the world in a single glance is one of the most accomplished feats of the human brain: it takes only a few tens of miliseconds to recognize the category of an object or environment, emphasizing an important role of feedforward processing in visual recognition.
+A system that can automatically describe the content of natural images in natural sentences (e.g., English sentence) has many practical applications. For instance, such a system can be instrumental in helping visually impaired users navigate in different environments such as in supermarket or in a crowded road with many transportation vehicles as well as other pedestrians. Moreover, textual descriptions can provide a rich source of information from underlying image, which can be an excellent means of visual and semantic information for image search engines. Being able to generate descriptions for images, a search engine can analyse and process query mainly based on the descriptions and return the results in much shorter amount of time and more relevant to users query's expectations.
+
+At the same time, however, generating image descriptions poses many challenges as it not only requires the system to understand visual representation of the input image, the system also has to ``translate'' such representation into sequence of words that describes the image. A large body of work has been continously conducted on this problem and many different approaches have been proposed and evaluated with different criteria and by different metrics.
+
+In this thesis, we describe an approach to this problem of generating image description based on recent advances in deep learning, specifically in computer vision and machine translation. Intuitively, the model presented in this thesis is comprised of a Convolutional Neural Network (\gls{cnn}) and a Long-Short Term Memory (LSTM) - the well-known variant of recurrent neural network. The CNN acts as an image encoder which ``encodes'' input image into a fixed-length vector representation. This vector is then fed into a LSTM module which ``decodes'' that representation into sequence of words.
+
+\section{Related Work}
+	This section serves as a brief review of recent works related to the problem of generating image captions using deep learning methods. Those include researches on convolutional neural network for visual feature extraction, recurrent neural network for sequence modelling and recent advances in neural image captioning.
+	
+		\subsubsection{Convolutional neural network} 
+		Starting with LeNet-5 \cite{lecun-98}, Convolutional Neural Networks (CNNs) have been applied to many computer vision tasks. \cite{NIPS2012_4824} proposed a deep CNN (7 learnt layers, $60$ million parameters) that achieved astonishing performance on ILSVRC 2012 \cite{ILSVRC15}. The key, which makes CNNs outperform all traditional descriptors (e.g. SIFT \cite{790410}, Fisher vector \cite{Sanchez2013}, etc.), lies in their capability to automatically learn the hierarchical representation (features) from data \cite{farabet2013learning}.  Indeed, CNNs have been proved as a powerful tool for feature extraction \cite{NIPS2012_4824, Simonyan14c, DBLP:journals/corr/SzegedyLJSRAEVR14, DBLP:journals/corr/HeZRS15} - a central task in most of computer vision problems. 
+
+		Many researches have attempted to improve many aspects of deep CNNs: network architecture, optimization methods, regularization and techniques for training deep nets. The recent trend is to increase the depth of the network; VGGNet proposed by \cite{Simonyan14c} has 19 layers, \cite{DBLP:journals/corr/SzegedyLJSRAEVR14} introduced GoogLeNet with inception module that has up to 32 layers, ResNet \cite{DBLP:journals/corr/HeZRS15} exploits a deep residual network of 152 layers and achieve state-of-the-art performance in image classification task.
+
+		Another aspect that attracts many reseachers is the activation function for each neuron in the network. \cite{icml2010_NairH10} proposed Rectified Linear Unit (ReLU) as a non-saturated activation function which is simpler and faster to compute than the traditional sigmoid-like and tanh functions. \cite{maas2013rectifier, DBLP:journals/corr/HeZR015,DBLP:journals/corr/XuWCL15} introduced several improvements to overcome non-differentiable characteristic of original ReLU that can hurt back-propagation algorithm's performance. Maxout \cite{goodfellow2013maxout} is an alternative non-linear function to ReLU that exhibits all advantages of ReLU as well as is well suited for training with Dropout \cite{DBLP:journals/corr/abs-1207-0580}.
+
+		One major problem that makes deep network difficult to train is overfitting. Dropout, first introduced by \cite{DBLP:journals/corr/abs-1207-0580} and subsequently utitlized and improved by \cite{wang2013fast, ba2013adaptive}, is an effective regularization to prevent overfitting.
+
+		\subsubsection{Recurrent neural network for sequence modelling}
+		Recurrent Neural Network (\gls{rnn}) is known as a powerful tool for sequence modelling. The first extensive work on RNN was \cite{elman1990finding} which proposed a simple \gls{rnn} in which each hidden node has a single self-connected recurrent edge and was trained using \gls{bptt} \cite{werbos1990backpropagation}. Learning with \gls{rnn} can be challenging due to long-term dependencies and \textit{vanishing} and \textit{exploding} gradient problems \cite{bengio1994learning}. \gls{lstm} \cite{Hochreiter:1997:LSM:1246443.1246450, graves2012} addressed the problem of vansihing gradient by introducing gate-like units. Since then, it has been utilized in variety of sequence learning tasks such as machine translation \cite{export:201107, DBLP:journals/corr/SutskeverVL14}, handwritting recognition \cite{liwicki2007novel}, video encoding \cite{DBLP:journals/corr/SrivastavaMS15}, video captioning \cite{DBLP:journals/corr/VenugopalanRDMD15} and program execution \cite{DBLP:journals/corr/ZarembaS14}.
+
+		\subsubsection{Image captioning}
+		A large body of work has addressed the problem of generating descriptions for a given image. Many approaches attack image captioning as a retrieval task. \cite{DBLP:journals/tacl/SocherKLMN14} proposed a dependency-tree recursive neural network (DT-RNN) model which uses dependency trees to embed sentences and image into a multi-modal embedding space, then the caption is retrieved by finding close-by sentence vector of the image-feature vector. \cite{Ordonez:2011:im2text} .\cite{Farhadi:2010:PTS:1888089.1888092} explores the image caption task by using detections to infer a triplet of scene elements which is converted to text using templates. Most of recent works on image caption are relied on combination of recent advances in computer vision and neural machine translation. \cite{DBLP:journals/corr/KarpathyF14} proposed an alignment model based on a novel \gls{cnn} \cite{Simonyan14c} over image regions and bidrectional recurrent neural networks over setneces to learn to generate descriptions for image regions. \cite{DBLP:journals/corr/LebretPC15, DBLP:journals/corr/FangGISDDGHMPZZ14, DBLP:journals/corr/DonahueHGRVSD14}
+
+
+\section{Organization of the thesis}
+	
+	The rest of the thesis is organized as follow.
+
+	\begin{itemize}[label={}]
+		\item \textbf{Chapter 1} gives an overview and motivation for the problem that this thesis is striving to solve. In addition, a review of related work is also included for reference.
+
+		\item \textbf{Chapter 2} presents essential backgrounds related to machine learning, deep learning in computer vision and sequence modelling so that one can comfortably understand the problems and approaches of this thesis without other ``heavy'' referential materials.
+
+		\item \textbf{Chapter 3} describes in details the architecture of image captioning models. Concretely, it explains the vision and language modelling parts of the models as well as the learning machenism used to train the models.
+
+		\item \textbf{Chapter 4} starts with detailed explanation about the implementation of training system that is used to train all the models. After that, it presents the experimental environment (i.e., hardware, software, datasets, etc.). Finally, a comprehensive descriptions of all experiments that we have performed together with the evaluations for each experiment are presented.
+
+		\item \textbf{Chapter 5} sums up the thesis with its contributions, limitations and discusses the future work that can be derived following up the work of this thesis.
+	\end{itemize}
